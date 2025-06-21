@@ -1,0 +1,110 @@
+body {
+  background: linear-gradient(135deg, #ececf1 0%, #f7f7fa 100%);
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.chat-container {
+  background: #fff;
+  max-width: 370px;
+  min-width: 290px;
+  width: 95vw;
+  margin: 32px auto;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+  padding: 18px 8px 12px;
+  border: 1px solid #e3e3e7;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.chat-title {
+  font-size: 1.15em;
+  color: #343541;
+  font-weight: bold;
+  margin-left: 2px;
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+  max-height: 60vh;
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+.bubble, .bubble.user, .bubble.bot {
+  max-width: 90%;
+  padding: 13px 16px;
+  border-radius: 14px;
+  font-size: 1em;
+  word-break: break-word;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  border: 1px solid #ececf1;
+}
+.bubble {
+  background: #f7f7fa;
+  color: #343541;
+}
+.bubble.user {
+  align-self: flex-end;
+  background: #10a37f;
+  color: #fff;
+  border-bottom-right-radius: 6px;
+  border: 1.5px solid #10a37f;
+}
+.bubble.bot {
+  align-self: flex-start;
+  background: #f7f7fa;
+  color: #343541;
+  border-bottom-left-radius: 6px;
+}
+
+.chat-input-container { display: flex; gap: 8px; margin-top: 8px; }
+.chat-input {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid #ececf1;
+  font-size: 1em;
+  background: #fff;
+  color: #343541;
+}
+.chat-input:focus { border: 2px solid #10a37f; }
+
+.chat-button {
+  background: #10a37f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 18px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(16,163,127,0.08);
+}
+.chat-button:hover {
+  background: #0e8c6c;
+}
+
+.logo-url, .chat-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  background-size: cover;
+  background-position: center;
+}

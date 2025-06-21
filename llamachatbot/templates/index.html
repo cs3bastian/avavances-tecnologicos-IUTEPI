@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Max AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <div id="logoDynamic" class="logo-url" style="background-image: url('https://static.vecteezy.com/system/resources/previews/038/471/662/non_2x/ai-generated-rottweiler-dog-peeking-illustration-pro-vector.jpg');"></div>
+            <div class="chat-title">Max AI</div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="bubble bot">¡Hola! Soy Max, tu asistente virtual. ¿En qué puedo ayudarte hoy?</div>
+        </div>
+        <form id="chatForm" autocomplete="off" class="chat-input-container">
+            <input type="text" class="chat-input" id="mensajeInput" name="message" placeholder="Enviar mensaje..." required autofocus>
+            <button class="chat-button" type="submit">Enviar</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script>
+    function setLogoUrl(url) {
+        document.getElementById('logoDynamic').style.backgroundImage = 'url(' + url + ')';
+    }
+    </script>
+</body>
+</html>
