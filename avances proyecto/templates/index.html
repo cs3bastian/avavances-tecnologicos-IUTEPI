@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>YucaFit - Productos Naturales y Saludables</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
+  <style id="app-style">
+    :root {
+      --color-primary: #4caf50; /* Verde principal */
+      --color-secondary: #f9a825; /* Amarillo */
+      --color-tertiary: #ff7043; /* Naranja */
+      --color-background: #f9f9f7;
+      --color-text: #333;
+      --color-chat-gradient: linear-gradient(135deg, #4caf50 60%, #f9a825 100%);
+      --color-chat-bot: #fffde7;
+      --color-chat-user: #4caf50;
+      --color-chat-user-text: #fff;
+      --color-chat-shadow: 0 8px 32px rgba(0,175,80,0.18);
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--color-text);
+      background-color: var(--color-background);
+      scroll-behavior: smooth;
+    }
+    .container {
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .banner {
+      min-height: 520px;
+      height: 520px;
+      max-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-size: cover;
+      background-position: center center;
+      image-rendering: auto;
+      -webkit-backface-visibility: hidden;
+      -webkit-transform: translateZ(0);
+      background-repeat: no-repeat;
+      position: relative;
+      text-align: center;
+      padding: 3rem 0 2rem 0;
+      margin: 0 0 2rem 0;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    }
+    .banner-overlay {
+      background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .banner .container {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+    .banner .text-white.max-w-2xl {
+      max-width: 700px;
+      margin-left: 0;
+      margin-right: auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 2;
+      text-align: left;
+    }
+    .banner h1 {
+      font-size: 2.7rem;
+      line-height: 1.2;
+      font-weight: 800;
+      color: #fff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .banner p {
+      font-size: 1.35rem;
+      color: #f3f3f3;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.15);
+    }
+    @media (max-width: 1024px) {
+      .banner {
+        min-height: 320px;
+        height: 320px;
+        max-height: 400px;
+        padding: 2rem 0 1.5rem 0;
+      }
+      .banner .text-white.max-w-2xl {
+        max-width: 95vw;
+        padding: 0 1rem;
+      }
+      .banner h1 {
+        font-size: 2rem;
+      }
+      .banner p {
+        font-size: 1.1rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .banner {
+        min-height: 180px;
+        height: 180px;
+        max-height: 220px;
+        border-radius: 12px;
+        padding: 1.5rem 0 1rem 0;
+      }
+      .banner .text-white.max-w-2xl {
+        max-width: 99vw;
+        padding: 0 0.5rem;
+      }
+      .banner h1 {
+        font-size: 1.3rem;
+      }
+      .banner p {
+        font-size: 1rem;
+      }
+    }
+    /* Sugerencia: usa una imagen de al menos 1920x700px para el banner para evitar pixelación. */
+    .section-title {
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+    }
+    .product-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 370px;
+      min-width: 250px;
+      width: 100%;
+    }
+    .product-image-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      background: #f9f9f7;
+    }
+    .product-image {
+      margin: 0 auto;
+      display: block;
+      border-radius: 12px;
+      max-width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .product-info {
+      text-align: center;
+    }
+    .feature {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .contact-info {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      margin-bottom: 1.5rem;
+    }
+    .contact-info .ml-4 {
+      margin-left: 1rem;
+    }
+    .social-icon {
+      margin: 0 0.25rem;
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      .product-card {
+        max-width: 100%;
+      }
+      .banner {
+        min-height: 160px;
+        height: 160px;
+        max-height: 160px;
+        border-radius: 12px;
+      }
+      .banner .text-white.max-w-2xl {
+        max-width: 98vw;
+        padding: 0 0.5rem;
+      }
+    }
+    .product-description {
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.5s, opacity 0.3s;
+      overflow: hidden;
+      pointer-events: none;
+      text-align: center;
+    }
+    .product-description.show {
+      max-height: 500px;
+      opacity: 1;
+      pointer-events: auto;
+    }
+    /* Chatbot burbuja y ventana */
+    .chatbot-bubble-btn {
+      position: fixed;
+      bottom: 110px;
+      right: 36px;
+      z-index: 9999;
+      background: linear-gradient(135deg, #fffde7 60%, #4caf50 100%);
+      color: #4caf50;
+      border: 3px solid #f9a825;
+      border-radius: 32px;
+      width: auto;
+      height: 64px;
+      box-shadow: 0 8px 32px rgba(76,175,80,0.28);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.5em 1.2em;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .chatbot-bubble-btn:hover {
+      box-shadow: 0 12px 36px rgba(249,168,37,0.18);
+      transform: scale(1.04);
+      background: linear-gradient(135deg, #fffde7 40%, #f9a825 100%);
+    }
+    .chatbot-bubble-btn img {
+      width: 44px;
+      height: 44px;
+      object-fit: contain;
+      margin-right: 12px;
+      filter: drop-shadow(0 2px 6px #f9a82588);
+    }
+    .chatbot-bubble-btn span {
+      background: #fffde7;
+      color: #4caf50;
+      font-weight: 700;
+      border-radius: 18px;
+      padding: 0.8em 1.4em;
+      font-size: 1.15rem;
+      box-shadow: 0 2px 12px rgba(76,175,80,0.13);
+      white-space: nowrap;
+      border: 2px solid #f9a825;
+      margin-right: 0;
+      letter-spacing: 0.01em;
+    }
+    .chatbot-window {
+      position: fixed;
+      bottom: 60px;
+      right: 40px;
+      width: 520px;
+      max-width: 99vw;
+      height: 620px;
+      max-height: 90vh;
+      background: #fff;
+      border-radius: 28px;
+      box-shadow: 0 16px 48px rgba(76,175,80,0.28);
+      z-index: 1002;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      border: 4px solid var(--color-primary);
+      animation: chatbot-pop 0.25s;
+      font-family: 'Poppins', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.01em;
+    }
+    @media (max-width: 700px) {
+      .chatbot-window {
+        width: 98vw;
+        right: 1vw;
+        left: 1vw;
+        height: 70vh;
+        max-height: 90vh;
+      }
+      .chatbot-bubble-btn {
+        bottom: 90px;
+        right: 12px;
+      }
+    }
+    .chatbot-tab-invite {
+      position: absolute;
+      top: -38px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(90deg, #fffde7 60%, #f9a825 100%);
+      color: #4caf50;
+      font-weight: 700;
+      font-size: 1.08rem;
+      border-radius: 16px 16px 0 0;
+      padding: 0.7em 2.2em;
+      box-shadow: 0 2px 8px rgba(76,175,80,0.10);
+      border: 2px solid #f9a825;
+      border-bottom: none;
+      z-index: 1003;
+      letter-spacing: 0.01em;
+      text-align: center;
+      white-space: nowrap;
+    }
+    @keyframes chatbot-pop {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .chatbot-window.active {
+      display: flex;
+    }
+    .chatbot-header {
+      display: none !important;
+    }
+    .chatbot-messages {
+      flex: 1;
+      padding: 2rem 1.7rem;
+      overflow-y: auto;
+      background: #f9f9f7;
+      font-size: 1.22rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      font-family: 'Poppins', 'Segoe UI', 'Roboto', Arial, sans-serif;
+    }
+    .chatbot-input-area {
+      display: flex;
+      border-top: 1.5px solid #e0e0e0;
+      background: #fff;
+      padding: 0.7rem 1rem;
+    }
+    .chatbot-input-area input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 0.7rem 1.2rem;
+      border-radius: 10px;
+      font-size: 1.22rem;
+      font-family: 'Poppins', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      background: #f9f9f7;
+      margin-right: 0.7rem;
+      color: #333;
+      box-shadow: 0 1px 3px rgba(76,175,80,0.04);
+    }
+    .chatbot-input-area button {
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 0.7rem 1.5rem;
+      font-size: 1.08rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+    }
+    .chatbot-input-area button:hover {
+      background: var(--color-secondary);
+    }
+    .chatbot-message {
+      margin-bottom: 0.7rem;
+      display: flex;
+      align-items: flex-end;
+    }
+    .chatbot-message.user {
+      justify-content: flex-end;
+    }
+    .chatbot-message.bot {
+      justify-content: flex-start;
+    }
+    .chatbot-message-content {
+      max-width: 85%;
+      padding: 0.8rem 1.2rem;
+      border-radius: 18px;
+      font-size: 1.22rem;
+      font-family: 'Poppins', 'Segoe UI', 'Roboto', Arial, sans-serif;
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+      background: var(--color-chat-bot);
+      color: #333;
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      box-shadow: 0 2px 8px rgba(76,175,80,0.08);
+      word-break: break-word;
+    }
+    .chatbot-message.user .chatbot-message-content {
+      background: var(--color-chat-user);
+      color: var(--color-chat-user-text);
+      border-bottom-right-radius: 6px;
+      align-self: flex-end;
+      font-weight: 500;
+    }
+    .chatbot-message.bot .chatbot-message-content {
+      background: var(--color-chat-bot);
+      color: #333;
+      border-bottom-left-radius: 6px;
+      align-self: flex-start;
+    }
+    /* Mostrar el chat por defecto */
+    .chatbot-window { display: none; }
+    .chatbot-bubble-btn { display: flex; }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-all duration-300">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="javascript:void(0)" class="flex items-center">
+        <span class="text-2xl font-bold text-green-600">Yuca<span class="text-yellow-500">Fit</span></span>
+      </a>
+      <div class="hidden md:flex items-center space-x-6">
+        <a href="#inicio" class="nav-link text-gray-700 hover:text-green-600 transition-colors">Inicio</a>
+        <a href="#productos" class="nav-link text-gray-700 hover:text-green-600 transition-colors">Productos</a>
+        <a href="#contacto" class="nav-link text-gray-700 hover:text-green-600 transition-colors">Contacto</a>
+      </div>
+      <button id="mobile-menu-button" class="md:hidden text-gray-700">
+        <i class="fas fa-bars text-xl"></i>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="md:hidden bg-white hidden">
+      <div class="container mx-auto px-4 py-2 flex flex-col space-y-4">
+        <a href="#inicio" class="text-gray-700 hover:text-green-600 transition-colors py-2">Inicio</a>
+        <a href="#productos" class="text-gray-700 hover:text-green-600 transition-colors py-2">Productos</a>
+        <a href="#contacto" class="text-gray-700 hover:text-green-600 transition-colors py-2">Contacto</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Inicio / Banner -->
+  <!-- Banner principal: puedes cambiar la imagen de fondo aquí -->
+  <section id="inicio" class="banner pt-16" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80');">
+    <div class="banner-overlay"></div>
+    <div class="container mx-auto px-4 h-full flex items-center">
+      <div class="text-white max-w-2xl text-left" data-aos="fade-right">
+        <h1 class="text-4xl md:text-5xl font-bold mb-4">Alimentos naturales para un estilo de vida saludable</h1>
+        <p class="text-lg md:text-xl mb-6">En YucaFit elaboramos productos artesanales a base de tubérculos, con mas de 11 años de experiencia llevando los mejores productos a las mesas de nuetros consumidores, sin conservantes ni aditivos artificiales. Nutritivos y Naturalmente Deliciosos.</p>
+        <a href="#productos" class="inline-block bg-green-600 hover:bg-green-700 text-white font-medium py-3 px-6 rounded-lg transition-all transform hover:-translate-y-1 hover:shadow-lg">
+          Conoce nuestros productos
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Características -->
+  <section class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-12" data-aos="fade-up">
+        <h2 class="text-3xl font-bold mb-4">Bienvenidos a YucaFit</h2>
+        <p class="text-gray-600 max-w-3xl mx-auto">Descubre una nueva forma de alimentarte, con productos que respetan tu cuerpo.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="feature text-center p-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-seedling text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">100% Natural</h3>
+          <p class="text-gray-600">Elaboramos nuestros productos con ingredientes frescos y naturales, sin conservantes ni aditivos artificiales.</p>
+        </div>
+        <div class="feature text-center p-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-heartbeat text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Nutrición Balanceada</h3>
+          <p class="text-gray-600">Nuestras recetas están diseñadas para ofrecer un equilibrio nutricional que favorece tu bienestar y salud.</p>
+        </div>
+        <div class="feature text-center p-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="feature-icon mx-auto">
+            <i class="fas fa-utensils text-2xl"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-3">Artesanal</h3>
+          <p class="text-gray-600">Cada producto es elaborado con cuidado y dedicación, siguiendo métodos tradicionales que preservan el sabor auténtico.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos -->
+  <section id="productos" class="py-16 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <h2 class="section-title text-3xl font-bold" data-aos="fade-up">Nuestros Productos</h2>
+      <p class="mb-12 text-gray-600 max-w-3xl" data-aos="fade-up">Descubre nuestra variedad de productos elaborados con tubérculos y plátano, perfectos para una alimentación balanceada.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Producto 1 -->
+        <div class="product-card bg-white rounded-lg overflow-hidden shadow-md" data-aos="fade-up" data-aos-delay="100">
+          <div class="product-image-container">
+            <!-- Producto 1: cambia la imagen aquí -->
+            <img src="https://app.magicloops.dev/storage/v1/object/public/chat-images/30e5f0a6-1eef-43d0-bca8-8623dbbeafd8/98fef0f6-3482-4972-87d6-4b72fc258ae7/9b7ef50e-2d18-4bec-bf26-9044a1d608d2.jpg" alt="Arepas de Yuca" class="product-image w-full">
+          </div>
+          <div class="product-info p-6">
+            <h3 class="text-xl font-semibold mb-2">Arepas de Yuca</h3>
+            <p class="text-gray-600 mb-4">Tradicionales arepas elaboradas con masa de yuca 100% natural.</p>
+            <div class="product-description">
+              <p class="text-gray-700 mb-4">Nuestras arepas de yuca están elaboradas con yuca fresca seleccionada, sin conservantes ni aditivos. Un producto rico en carbohidratos complejos y bajo en grasas, ideal para acompañar tus comidas o como la opcion ideal para tus desayunos.</p>
+              <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Sin gluten</li>
+                <li>Alto contenido de fibra</li>
+                <li>Fuente de energía natural</li>
+                <li>Ideales para tus desayunos y el de tu familia</li>
+                <li>con un tiempo de cocción aproximado de 5 minutos</li>
+              </ul>
+            </div>
+            <button class="toggle-description bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm">
+              Ver descripción
+            </button>
+          </div>
+        </div>
+        <!-- Producto 2 -->
+        <div class="product-card bg-white rounded-lg overflow-hidden shadow-md" data-aos="fade-up" data-aos-delay="200">
+          <div class="product-image-container">
+            <!-- Producto 2: cambia la imagen aquí -->
+            <img src="https://i.pinimg.com/736x/44/44/e7/4444e77ff07546f748de46c607feeb02.jpg" alt="Arepas de Plátano" class="product-image w-full">
+          </div>
+          <div class="product-info p-6">
+            <h3 class="text-xl font-semibold mb-2">Arepas de Plátano</h3>
+            <p class="text-gray-600 mb-4">Arepas elaboradas con plátano verde, ideales para cualquier momento del día.</p>
+            <div class="product-description">
+              <p class="text-gray-700 mb-4">Nuestras arepas de plátano verde combinan el sabor tradicional con los beneficios nutricionales del plátano. Ricas en potasio y almidón resistente, son perfectas para mantener una alimentación equilibrada.</p>
+              <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Bajo índice glucémico</li>
+                <li>Rico en potasio</li>
+                <li>Fuente natural de energía</li>
+                <li>Ideales para tus desayunos y el de tu familia</li>
+                <li>con un tiempo de cocción aproximado de 5 minutos</li>
+              </ul>
+            </div>
+            <button class="toggle-description bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm">
+              Ver descripción
+            </button>
+          </div>
+        </div>
+        <!-- Producto 3 -->
+        <div class="product-card bg-white rounded-lg overflow-hidden shadow-md" data-aos="fade-up" data-aos-delay="150">
+          <div class="product-image-container">
+            <!-- Producto 3: cambia la imagen aquí -->
+            <img src="https://i.pinimg.com/736x/2a/38/8e/2a388edad96101b728b6c72760d0ee0e.jpg" alt="Arepas de Batata" class="product-image w-full">
+          </div>
+          <div class="product-info p-6">
+            <h3 class="text-xl font-semibold mb-2">Arepas de Batata</h3>
+            <p class="text-gray-600 mb-4">Deliciosas arepas de batata dulce, nutritivas y llenas de sabor.</p>
+            <div class="product-description">
+              <p class="text-gray-700 mb-4">Elaboradas con batata dulce orgánica, nuestras arepas tienen un suave sabor dulce natural y un hermoso color anaranjado. Ricas en vitamina A, betacarotenos y fibra.</p>
+              <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Alto contenido de antioxidantes</li>
+                <li>Fuente de vitaminas</li>
+                <li>Sabor ligeramente dulce</li>
+                <li>Ideales para tus desayunos y el de tu familia</li>
+                <li>con un tiempo de cocción aproximado de 5 minutos</li>
+              </ul>
+            </div>
+            <button class="toggle-description bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm">
+              Ver descripción
+            </button>
+          </div>
+        </div>
+        <!-- Producto 4 -->
+        <div class="product-card bg-white rounded-lg overflow-hidden shadow-md" data-aos="fade-up" data-aos-delay="250">
+          <div class="product-image-container">
+            <!-- Producto 4: cambia la imagen aquí -->
+            <img src="https://i.pinimg.com/736x/b9/67/66/b96766c521d632e4ab873a6354ba0151.jpg" alt="Empanadas de Yuca" class="product-image w-full">
+          </div>
+          <div class="product-info p-6">
+            <h3 class="text-xl font-semibold mb-2">Empanadas de Yuca</h3>
+            <p class="text-gray-600 mb-4">Empanadas con masa de yuca y rellenos naturales de vegetales y proteínas.</p>
+            <div class="product-description">
+              <p class="text-gray-700 mb-4">La masa de nuestras empanadas está elaborada con yuca fresca, dándoles una textura única y un sabor inigualable. Ofrecemos diferentes opciones de relleno, todos preparados con ingredientes frescos y naturales.</p>
+              <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Textura crujiente por fuera, suave por dentro</li>
+                <li>Rellenos variados: queso, vegetales o proteina animal</li>
+                <li>Ideales como aperitivo o comida completa</li>
+                <li>Ideales para tus desayunos y el de tu familia</li>
+                <li>con un tiempo de cocción aproximado de 5 minutos</li>
+              </ul>
+            </div>
+            <button class="toggle-description bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm">
+              Ver descripción
+            </button>
+          </div>
+        </div>
+        <!-- Producto 5 -->
+        <div class="product-card bg-white rounded-lg overflow-hidden shadow-md" data-aos="fade-up" data-aos-delay="300">
+          <div class="product-image-container">
+            <!-- Producto 5: cambia la imagen aquí -->
+            <img src="https://i.pinimg.com/736x/c3/e4/50/c3e45076d9cdf1c64b47e9c5dad47e08.jpg" alt="Arepas de Ocumo" class="product-image w-full">
+          </div>
+          <div class="product-info p-6">
+            <h3 class="text-xl font-semibold mb-2">Arepas de Ocumo</h3>
+            <p class="text-gray-600 mb-4">Exóticas arepas elaboradas con ocumo, un tubérculo rico en nutrientes.</p>
+            <div class="product-description">
+              <p class="text-gray-700 mb-4">El ocumo (también conocido como malanga) es un tubérculo con propiedades nutricionales excepcionales. Nuestras arepas de ocumo tienen una textura única y un sabor suave que complementa perfectamente cualquier comida.</p>
+              <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Rico en minerales y vitaminas</li>
+                <li>Fácilmente digerible</li>
+                <li>Sabor delicado y textura especial</li>
+                <li>Ideales para tus desayunos y el de tu familia</li>
+                <li>con un tiempo de cocción aproximado de 5 minutos</li>
+              </ul>
+            </div>
+            <button class="toggle-description bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm">
+              Ver descripción
+            </button>
+          </div>
+        </div>
+        <!-- Producto 6 -->
+        <div class="product-card bg-white rounded-lg overflow-hidden shadow-md" data-aos="fade-up" data-aos-delay="350">
+          <div class="product-image-container">
+            <!-- Producto 6: cambia la imagen aquí -->
+            <img src="https://i.pinimg.com/736x/25/f4/f9/25f4f931e71d241b59e3b9fbff287bce.jpg" alt="Tortillas de Yuca" class="product-image w-full">
+          </div>
+          <div class="product-info p-6">
+            <h3 class="text-xl font-semibold mb-2">Tortillas de Yuca</h3>
+            <p class="text-gray-600 mb-4">Tortillas finas y flexibles elaboradas con masa de yuca, perfectas para wraps.</p>
+            <div class="product-description">
+              <p class="text-gray-700 mb-4">Nuestras tortillas de yuca son una alternativa sin gluten a las tradicionales tortillas de maíz o trigo. Su textura flexible las hace ideales para preparar wraps, tacos o cualquier receta que requiera una base suave y resistente.</p>
+              <ul class="list-disc list-inside text-gray-700 mb-4">
+                <li>Alternativa sin gluten</li>
+                <li>Flexibles y resistentes</li>
+                <li>Sabor neutro que combina con todo</li>
+                <li>Ideales para tus desayunos y el de tu familia</li>
+                <li>con un tiempo de cocción aproximado de 5 minutos</li>
+              </ul>
+            </div>
+            <button class="toggle-description bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded text-sm">
+              Ver descripción
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contacto -->
+  <section id="contacto" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <div class="text-center max-w-xl mx-auto">
+        <h2 class="section-title text-3xl font-bold mb-6">Información de Contacto</h2>
+        <p class="mb-6 text-gray-600">¿Tienes dudas o quieres hacer un pedido? Usa el chat flotante o contáctanos por los siguientes medios:</p>
+        <!-- Solo información de contacto de la empresa -->
+        <div class="flex flex-col items-center gap-4">
+          <div>
+            <i class="fas fa-map-marker-alt text-2xl mb-1"></i><br>
+            <span class="font-semibold">Dirección:</span>
+            <span class="text-gray-600">Valencia, Estado Carabobo, Venezuela</span>
+          </div>
+          <div>
+            <i class="fas fa-phone-alt text-2xl mb-1"></i><br>
+            <span class="font-semibold">Teléfono:</span>
+            <span class="text-gray-600">+58 4144029489</span>
+          </div>
+          <div>
+            <i class="fas fa-envelope text-2xl mb-1"></i><br>
+            <span class="font-semibold">Instagram:</span>
+            <span class="text-gray-600">@YucaF1t</span><br>
+            <span class="font-semibold">WhatsApp:</span>
+            <span class="text-gray-600">04144029489</span>
+          </div>
+          <div class="mt-4">
+            <span class="font-semibold mb-2 block">Síguenos en redes sociales</span>
+            <div class="flex gap-4 justify-center">
+              <a href="javascript:void(0)" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+              <a href="javascript:void(0)" class="social-icon"><i class="fab fa-instagram"></i></a>
+              <a href="javascript:void(0)" class="social-icon"><i class="fab fa-twitter"></i></a>
+              <a href="javascript:void(0)" class="social-icon"><i class="fab fa-whatsapp"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-white py-10">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        <div class="mb-6 md:mb-0">
+          <a href="javascript:void(0)" class="text-2xl font-bold">Yuca<span class="text-yellow-500">Fit</span></a>
+          <p class="mt-2 text-gray-400">Alimentos naturales para un estilo de vida saludable</p>
+        </div>
+        <div class="flex flex-wrap justify-center md:justify-end gap-4">
+          <a href="#inicio" class="text-gray-400 hover:text-white transition-colors">Inicio</a>
+          <a href="#productos" class="text-gray-400 hover:text-white transition-colors">Productos</a>
+          <a href="#contacto" class="text-gray-400 hover:text-white transition-colors">Contacto</a>
+        </div>
+      </div>
+      <hr class="my-6 border-gray-700">
+      <p class="text-center text-gray-400 text-sm">
+        © 2025 YucaFit. Todos los derechos reservados.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Chatbot -->
+  <div class="chatbot-bubble-btn" id="chatbot-toggle">
+    <img src="https://cdn-icons-png.flaticon.com/512/1046/1046857.png" alt="Empanada" />
+    <span>¿Tienes dudas? ¡Chatea aquí! 👋</span>
+  </div>
+  <div class="chatbot-window" id="chatbot-window">
+    <div class="chatbot-tab-invite">
+      ¿Te gustaría saber más sobre nuestros productos? ¡Consulta aquí! 🍠🥔🍌
+    </div>
+    <button id="chatbot-close" style="position:absolute;top:10px;right:16px;background:none;border:none;font-size:1.7rem;color:#4caf50;cursor:pointer;z-index:1004;" title="Cerrar chat">&times;</button>
+    <div class="chatbot-messages" id="chatbot-messages"></div>
+    <div class="chatbot-input-area">
+      <input type="text" id="chatbot-input" placeholder="Escribe tu mensaje..." />
+      <button id="chatbot-send">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    // Inicializa las animaciones AOS
+    AOS.init();
+    // Mostrar/ocultar descripción de productos
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.toggle-description').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var desc = btn.parentElement.querySelector('.product-description');
+          if (desc) {
+            desc.classList.toggle('show');
+            btn.textContent = desc.classList.contains('show') ? 'Ocultar descripción' : 'Ver descripción';
+          }
+        });
+      });
+      // Eliminar asteriscos de los mensajes del chatbot
+      const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          mutation.addedNodes.forEach(function(node) {
+            if (node.nodeType === 1 && node.classList.contains('chatbot-message-content')) {
+              node.innerHTML = node.innerHTML.replace(/\*/g, '');
+            }
+          });
+        });
+      });
+      const messages = document.getElementById('chatbot-messages');
+      if (messages) {
+        observer.observe(messages, { childList: true });
+      }
+    });
+  </script>
+</body>
+</html>

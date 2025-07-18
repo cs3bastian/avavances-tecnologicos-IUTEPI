@@ -1,0 +1,5 @@
+Flask
+python-dotenv
+openai
+beautifulsoup4
+twilio
